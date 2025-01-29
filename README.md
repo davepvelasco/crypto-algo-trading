@@ -24,9 +24,9 @@ A web application for testing algorithmic trading strategies in the cryptocurren
    cd crypto-algo-trading
    ```
 
-### Standard Installation
+### Standard Installation (Recommended)
 
-**Create a Virtual Environment (Recommended)**
+**Create a Virtual Environment**
 ```bash
 # On macOS/Linux
 source venv/bin/activate  
@@ -41,17 +41,15 @@ venv\Scripts\Activate.ps1
    pip install -r requirements.txt
    ```
 
-### Via Docker Compose
+### Via Docker Compose (Alternative)
 ```bash
 docker-compose up -d
 ```
 
 ## Usage
 
-### Starting the Server
+***Starting the Server**
 If you installed via Docker Compose, you don't need to run this command manually.
-
-**Standard Installation**
    ```bash
    streamlit run app.py
    ```
