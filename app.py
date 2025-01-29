@@ -1,3 +1,6 @@
+import json
+from pathlib import Path
+
 import backtrader as bt
 import pandas as pd
 import plotly.graph_objects as go
@@ -6,15 +9,37 @@ import streamlit as st
 
 from backtest import backtest
 from data_pipeline import CoinGeckoFetcher
-from strategies import RSIStrategy, SMACStrategy
+from strategies import ARIMAStrategy, RSIStrategy, SMACStrategy
 
 st.set_page_config(layout="wide")
 
-# Fetch the list of supported coins from CoinGecko
-coins_json = requests.get("https://api.coingecko.com/api/v3/coins/list").json()
-coins = [item.get("id") for item in coins_json]
+# Define the file path to store the coin list
+COINS_FILE = Path("coins.json")
 
-STRATEGY_MAP = {"SMAC Strategy": SMACStrategy, "RSI Strategy": RSIStrategy}
+# Check if the file exists
+if COINS_FILE.exists():
+    # ✅ Read from file
+    with COINS_FILE.open("r") as file:
+        coins_json = json.load(file)
+        coins = [item.get("id") for item in coins_json]
+else:
+    # ✅ Fetch from CoinGecko API
+    response = requests.get("https://api.coingecko.com/api/v3/coins/list")
+    if response.status_code == 200:
+        coins_json = response.json()
+        coins = [item.get("id") for item in coins_json]
+
+        # ✅ Save to file for future use
+        with COINS_FILE.open("w") as file:
+            json.dump(coins_json, file, indent=4)
+    else:
+        raise Exception("Failed to fetch coins from CoinGecko API")
+
+STRATEGY_MAP = {
+    "ARIMA Strategy": ARIMAStrategy,
+    "SMAC Strategy": SMACStrategy,
+    "RSI Strategy": RSIStrategy,
+}
 
 
 def plot_candlestick(df, order_history_df, title):
@@ -75,12 +100,30 @@ def get_strategy_params(strategy_class):
         return dict(fast_period=10, slow_period=30)
     if strategy_class == RSIStrategy:
         return dict(rsi_period=14, overbought=70, oversold=30)
+    if strategy_class == ARIMAStrategy:
+        return dict(
+            p=0,
+            d=0,
+            q=0,
+            look_ahead=5,
+            lookback=30,
+            threshold=0.01,
+            hold_period=5,
+        )
 
 
 def create_sidebar_inputs(params):
     user_inputs = {}
     for param_name, default_value in params.items():
-        if isinstance(default_value, int):
+        # Sliders for ARIMA
+        if param_name in ["p", "d", "q"]:
+            user_inputs[param_name] = st.sidebar.slider(
+                f"ARIMA {param_name.upper()} (Order)",
+                min_value=0,
+                max_value=5,
+                value=default_value,
+            )
+        elif isinstance(default_value, int):
             user_inputs[param_name] = st.sidebar.slider(
                 f"{param_name.replace('_', ' ').capitalize()}",
                 min_value=1,
@@ -105,7 +148,9 @@ def create_sidebar_inputs(params):
 st.title("Crypto Trading Strategy Dashboard")
 
 st.sidebar.subheader("Settings")
-coin = st.sidebar.selectbox("Select Cryptocurrency", coins, index=coins.index("bitcoin"))
+coin = st.sidebar.selectbox(
+    "Select Cryptocurrency", coins, index=coins.index("bitcoin")
+)
 days = st.sidebar.slider("Select Days", min_value=30, max_value=365, value=180)
 initial_balance = st.sidebar.slider(
     "Select Balance", min_value=100, max_value=100000, value=10000

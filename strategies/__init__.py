@@ -1,3 +1,3 @@
-from .strategies import RSIStrategy, SMACStrategy
+from .strategies import ARIMAStrategy, RSIStrategy, SMACStrategy
 
-__all__ = ["RSIStrategy", "SMACStrategy"]
+__all__ = ["ARIMAStrategy", "RSIStrategy", "SMACStrategy"]
