@@ -1,6 +1,7 @@
 # crypto-algo-trading
 
 A web application for testing algorithmic trading strategies in the cryptocurrency market. The application enables traders to visualize market data and backtest strategies.
+![Screenshot from 2025-01-29 18-12-16](https://github.com/user-attachments/assets/741f6614-edad-4515-97eb-79d174cf632e)
 
 ## Features
 
