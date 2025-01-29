@@ -13,35 +13,49 @@ A web application for testing algorithmic trading strategies in the cryptocurren
 
 ## Built With
 
-[![Python][Python.org]][Python-url] [![Streamlit][Streamlit.io]][Streamlit-url] [![Pandas][Pandas.pydata.org]][Pandas-url]
+[![Python][Python.org]][Python-url] [![Streamlit][Streamlit.io]][Streamlit-url] [![Pandas][Pandas.pydata.org]][Pandas-url] [![Docker][Docker.com]][Docker-url]
 
 ## Installation
 
-1. **Clone the Repository**  
+**Clone the Repository**  
    ```bash
    git clone https://github.com/davepvelasco/crypto-algo-trading.git
    cd crypto-algo-trading
    ```
 
-2. **Create a Virtual Environment (Recommended)**  
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
-   ```
+### Standard Installation
 
-3. **Install Dependencies**  
+**Create a Virtual Environment (Recommended)**
+```bash
+# On macOS/Linux
+source venv/bin/activate  
+# On Windows (Command Prompt)
+venv\Scripts\activate
+# On Windows (PowerShell)
+venv\Scripts\Activate.ps1
+```
+
+**Install Dependencies**  
    ```bash
    pip install -r requirements.txt
    ```
 
+### Via Docker Compose
+```bash
+docker-compose up -d
+```
+
 ## Usage
 
+### Starting the Server
+If you installed via Docker Compose, you don't need to run this command manually.
 
-1. **Start the Streamlit Server**  
+**Standard Installation**
    ```bash
    streamlit run app.py
    ```
-2. **Access the Web Interface**  
+
+**Access the Web Interface**  
    Open your browser and go to:  
    ```
    http://localhost:8501/
@@ -63,7 +77,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Todos
 - [ ] Add more data sources from other platforms
-= [ ] More comprehensive metrics (PnL, Sharpe Ratio, Maximum Drawdon, Winrate, etc.)
+- [ ] More comprehensive metrics (PnL, Sharpe Ratio, Maximum Drawdown, Winrate, etc.)
 - [ ] More trading strategies (ex. LSTM)
 - [ ] Live trading
 
@@ -73,3 +87,5 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 [Streamlit-url]: https://streamlit.io/
 [Pandas.pydata.org]: https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white
 [Pandas-url]: https://pandas.pydata.org/
+[Docker.com]: https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white
+[Docker-url]: https://www.docker.com/
