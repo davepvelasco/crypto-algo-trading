@@ -63,6 +63,7 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Todos
 - [ ] Add more data sources from other platforms
+= [ ] More comprehensive metrics (PnL, Sharpe Ratio, Maximum Drawdon, Winrate, etc.)
 - [ ] More trading strategies (ex. LSTM)
 - [ ] Live trading
 
